@@ -1,34 +1,8 @@
 import { Injectable } from '@nestjs/common';
-
+import { randomUUID } from 'crypto';
 @Injectable()
 export class MessageService {
-  private readonly messages = [
-    {
-      id: 'msg-1',
-      threadId: 'thread-1',
-      senderId: 'user-1',
-      receiverId: 'user-2',
-      message: 'Hello family!',
-      type: 'text',
-      createdAt: new Date().toISOString(),
-    },
-  ];
-
-  sendMessage(body: { receiverId: string; message: string; type?: string }) {
-    return {
-      success: true,
-      message: {
-        id: 'new-msg',
-        senderId: 'user-1',
-        receiverId: body.receiverId,
-        message: body.message,
-        type: body.type ?? 'text',
-        createdAt: new Date().toISOString(),
-      },
-    };
-  }
-
-  getThreadMessages(threadId: string) {
-    return this.messages.filter((message) => message.threadId === threadId);
-  }
+  private readonly items: any[] = [];
+  send(senderId: string, body: any) { const message = { id: randomUUID(), senderId, receiverId: body.receiverId, content: body.content, type: body.type ?? 'text', createdAt: new Date().toISOString() }; this.items.push(message); return message; }
+  inbox(userId: string) { return this.items.filter((m) => m.senderId === userId || m.receiverId === userId); }
 }

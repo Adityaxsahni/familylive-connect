@@ -1,31 +1,13 @@
-import { Controller, Post, Body, UnauthorizedException } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
+import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
 import { AuthService } from './auth.service';
-import { LoginDto } from './dto/login.dto';
 
-@Controller('auth')
+class CredentialsDto { @IsEmail() email!: string; @IsNotEmpty() @MinLength(8) password!: string; }
+class RegisterDto extends CredentialsDto { @IsNotEmpty() name!: string; }
+
+@Controller('api/v1/auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
-
-  @Post('login')
-  async login(@Body() dto: LoginDto) {
-    const user = await this.authService.validateUser(dto.email, dto.password);
-
-    if (!user) {
-      throw new UnauthorizedException('Invalid credentials');
-    }
-
-    const accessToken = this.authService.signAccessToken(user);
-    const refreshToken = this.authService.signRefreshToken(user);
-
-    return {
-      user: {
-        id: user.id,
-        uniqueUserId: user.uniqueUserId,
-        name: user.name,
-        email: user.email,
-      },
-      accessToken,
-      refreshToken,
-    };
-  }
+  constructor(private readonly auth: AuthService) {}
+  @Post('register') register(@Body() dto: RegisterDto) { return this.auth.register(dto); }
+  @Post('login') login(@Body() dto: CredentialsDto) { return this.auth.login(dto); }
 }

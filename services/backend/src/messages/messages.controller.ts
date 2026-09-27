@@ -1,17 +1,8 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req } from '@nestjs/common';
 import { MessageService } from './messages.service';
-
-@Controller('messages')
+@Controller('api/v1/messages')
 export class MessageController {
-  constructor(private readonly messageService: MessageService) {}
-
-  @Post('send')
-  sendMessage(@Body() body: { receiverId: string; message: string; type?: string }) {
-    return this.messageService.sendMessage(body);
-  }
-
-  @Get('threads/:threadId')
-  getThreadMessages(threadId: string) {
-    return this.messageService.getThreadMessages(threadId);
-  }
+  constructor(private readonly messages: MessageService) {}
+  @Post('send') send(@Body() body: any, @Req() req: any) { return this.messages.send(req.user?.id ?? 'demo-user', body); }
+  @Get('inbox') inbox(@Req() req: any) { return this.messages.inbox(req.user?.id ?? 'demo-user'); }
 }

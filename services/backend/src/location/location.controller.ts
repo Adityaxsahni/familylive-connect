@@ -1,22 +1,9 @@
-import { Controller, Post, Body, Get, Param } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
 import { LocationService } from './location.service';
-
-@Controller('location')
+@Controller('api/v1/location')
 export class LocationController {
-  constructor(private readonly locationService: LocationService) {}
-
-  @Post('update')
-  updateLocation(@Body() body: { latitude: number; longitude: number; accuracy: number; speed?: number }) {
-    return this.locationService.updateLocation(body);
-  }
-
-  @Get('current/:userId')
-  getCurrentLocation(@Param('userId') userId: string) {
-    return this.locationService.getCurrentLocation(userId);
-  }
-
-  @Get('history/:userId')
-  getHistory(@Param('userId') userId: string) {
-    return this.locationService.getHistory(userId);
-  }
+  constructor(private readonly locations: LocationService) {}
+  @Post('update') update(@Body() body: any, @Req() req: any) { return this.locations.update(req.user?.id ?? 'demo-user', body); }
+  @Get('current/:userId') current(@Param('userId') id: string) { return this.locations.current(id); }
+  @Get('history/:userId') history(@Param('userId') id: string) { return this.locations.history(id); }
 }

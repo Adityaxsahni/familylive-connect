@@ -1,24 +1,4 @@
-# FamilyLive Connect
-
-This repository serves as the starter foundation for the FamilyLive Connect product.
-
-It includes:
-- monorepo structure
-- production-grade design documents
-- initial NestJS backend implementation
-- template for later Flutter client app modules
-
-## Folder layout
-
-```text
-apps/
-  mobile/
-    README.md
-services/
-  backend/
-    src/
-    package.json
-    tsconfig.json
-    tsconfig.build.json
-    nest-cli.json
-```
+services/backend/node_modules
+services/backend/dist
+.env
+.DS_Store

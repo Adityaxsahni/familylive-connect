@@ -1,17 +1,9 @@
-import { Controller, Post, Body, Get, Param } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req } from '@nestjs/common';
 import { SosService } from './sos.service';
-
-@Controller('sos')
+@Controller('api/v1/sos')
 export class SosController {
-  constructor(private readonly sosService: SosService) {}
-
-  @Post('trigger')
-  trigger(@Body() body: { userId: string; latitude: number; longitude: number; message?: string }) {
-    return this.sosService.trigger(body);
-  }
-
-  @Get('status/:userId')
-  getStatus(@Param('userId') userId: string) {
-    return this.sosService.getStatus(userId);
-  }
+  constructor(private readonly sos: SosService) {}
+  @Post('trigger') trigger(@Body() body: any, @Req() req: any) { return this.sos.trigger(req.user?.id ?? 'demo-user', body); }
+  @Post('cancel') cancel(@Req() req: any) { return this.sos.cancel(req.user?.id ?? 'demo-user'); }
+  @Get('status') status(@Req() req: any) { return this.sos.status(req.user?.id ?? 'demo-user'); }
 }
