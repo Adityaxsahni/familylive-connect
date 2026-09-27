@@ -1,36 +1,23 @@
-# FamilyLive Connect Mobile
+# FamilyLive Connect mobile client
 
-This folder is reserved for the Flutter mobile client.
+## Run locally
 
-Recommended app architecture:
-- app/
-- core/
-- features/
-  - auth/
-  - profile/
-  - family/
-  - map/
-  - chat/
-  - calls/
-  - sos/
-  - settings/
+```bash
+flutter pub get
+flutter run
+```
 
-## Suggested Flutter stack
+The client currently provides a working mobile shell with:
+- sign-in and registration screens
+- secure token storage
+- map-first home screen
+- OpenStreetMap rendering
+- current-location permission and centering
+- live-sharing toggle UI
+- premium dark visual system
 
-- Flutter
-- Riverpod or Bloc
-- Mapbox or Google Maps
-- Firebase Cloud Messaging
-- WebSocket client
-- local caching with Hive or SQLite
+Set `ApiClient.baseUrl` to the reachable backend address for a physical device. Android emulators generally use `10.0.2.2:3000`; iOS simulators can use `localhost:3000`.
 
-## Typical app flow
+## Production map provider
 
-1. Register or sign in
-2. Create a profile and unique user ID
-3. Add family members
-4. Authorize location sharing
-5. View live markers on the map
-6. Open contact detail sheet
-7. Message, call, or trigger SOS
-8. Browse nearby attractions
+OpenStreetMap is used for development. Before production, configure Mapbox or Google Maps, review tile/provider terms, and move the API base URL into build-time environment configuration.
