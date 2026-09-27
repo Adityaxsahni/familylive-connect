@@ -1,0 +1,13 @@
+{
+  "name": "familylive-connect",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "services/backend"
+  ],
+  "scripts": {
+    "backend": "npm --workspace services/backend run start:dev",
+    "build:backend": "npm --workspace services/backend run build",
+    "lint:backend": "npm --workspace services/backend run lint"
+  }
+}
